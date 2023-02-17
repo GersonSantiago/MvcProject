@@ -1,18 +1,29 @@
 ﻿
+using LanchesMvc.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+
 namespace LanchesMvc
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
+
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
+        public string DefaultConnection { get; private set; }
+
+        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
         }
 
